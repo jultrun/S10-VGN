@@ -64,7 +64,7 @@ class ListaAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
         numerosxy=[]#arreglo de posiciones
         while (len(numerosxy) < numeroIni):
             numerox= random.randint(AstroWidh,WIDTH-AstroWidh)
-            numeroy= random.randint(numeroIni*-60*3,-5)
+            numeroy= random.randint(numeroIni*-60*2,-5)
             numeroxy=(numerox ,numeroy)
             if not numeroxy in numerosxy:
                 numerosxy.append((numerox,numeroy))#retorna un arreglo de tuplas aletorias si que se repitan en un espacio determinado
