@@ -8,7 +8,7 @@ from pygame import sprite
 from __builtin__ import str
 # variables
 score=0
-vidas=10
+vidas=30
 # Constantes
 WIDTH = 640
 HEIGHT = 480
@@ -61,16 +61,14 @@ class ListaAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
     def __init__(self,numeroIni):
         AstroWidh=Asteriode(0,0).rect.width
         self.list=[]
-        numerosxy=[]#arreglo de posiciones
-        while (len(numerosxy) < numeroIni):
-            numerox= random.randint(AstroWidh,WIDTH-AstroWidh)
-            numeroy= random.randint(numeroIni*-60*2,-5)
-            numeroxy=(numerox ,numeroy)
-            if not numeroxy in numerosxy:
-                numerosxy.append((numerox,numeroy))#retorna un arreglo de tuplas aletorias si que se repitan en un espacio determinado
+        ax,ay=[],[]#arreglo de posiciones
+        while (len(ax) < numeroIni):
+            nx= random.randint(AstroWidh,WIDTH-AstroWidh)
+            ay.append(random.randint(numeroIni*-60*2,-5))
+            if not nx in ax:
+                ax.append(nx)#retorna un arreglo de tuplas aletorias si que se repitan en un espacio determinado
         for x in range(numeroIni):
-            xr,yr = numerosxy[x]
-            self.list.append(Asteriode(xr,yr))
+            self.list.append(Asteriode(ax[x],ay[x]))
     def mover(self,time):
         for asteriodes in self.list: #por cada asteroidede la lista llamar la funcion mover
             asteriodes.mover(time)
@@ -124,7 +122,7 @@ def main():
     fuenteEnd=pygame.font.Font(None,80)
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
-    astro = ListaAsteorides(vidas+90)
+    astro = ListaAsteorides(vidas*2)
     while True:        
             time = clock.tick(60)
             screen.blit(fondo,(0,0))                 
