@@ -129,7 +129,8 @@ def main():
             screen.blit(fondo,(0,0))                 
             for eventos in pygame.event.get():
                 if eventos.type == QUIT:
-                    sys.exit(0)             
+                    pygame.quit()
+                    sys.exit()           
                 if eventos.type == MOUSEBUTTONDOWN:
                     if navePanel.disparar(screen, pygame.mouse.get_pressed()):
                         astro.destruir() 
