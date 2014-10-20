@@ -121,7 +121,6 @@ def main():
     mira = Mira(0,0,"data/mira.png")
     navePanel = NavePanel(0,HEIGHT-60,"data/navePanel.png")    
     fuenteDig=pygame.font.Font("data/fuenteDigital.TTF",20)#ds digital datafont.com
-    fuenteEnd=pygame.font.Font(None,80)
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
     astro = ListaAsteorides(vidas+90)
