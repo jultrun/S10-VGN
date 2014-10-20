@@ -148,6 +148,7 @@ def main():
             pygame.display.update()
             #fin del juego
             if vidas <=0 or astro.listExis():
+                fuenteEnd=pygame.font.Font("data/fuenteDigital.TTF",80)
                 pygame.mouse.set_visible(True)
                 while True:
                     screen.blit(fondo,(0,0))
@@ -160,8 +161,10 @@ def main():
                     screen.blit(textoEnd,( (WIDTH/2)-fuenteEnd.get_height() ,(HEIGHT/2)-fuenteEnd.get_height() ) )
                     for eventos in pygame.event.get():
                         if eventos.type == QUIT:
-                            sys.exit(0)
-                    pygame.display.update()            
+                            pygame.quit()
+                            sys.exit()
+                    pygame.display.update()           
+    return 0       
     return 0
  
 if __name__ == '__main__':
