@@ -8,6 +8,7 @@ from pygame import sprite
 from __builtin__ import str
 # variables
 score=0
+nivel=1
 vidas=10
 # Constantes
 WIDTH = 640
@@ -57,45 +58,41 @@ class Asteriode(pygame.sprite.Sprite):
         self.rect.move_ip(0,1)
     def update(self,superficie):
         superficie.blit(self.image,self.rect)      
-class ListaAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
-    def __init__(self,numeroIni):
-        AstroWidh=Asteriode(0,0).rect.width
-        self.list=[]
-        numerosxy=[]#arreglo de posiciones
-        while (len(numerosxy) < numeroIni):
-            numerox= random.randint(AstroWidh,WIDTH-AstroWidh)
-            numeroy= random.randint(numeroIni*-60*3,-5)
-            numeroxy=(numerox ,numeroy)
-            if not numeroxy in numerosxy:
-                numerosxy.append((numerox,numeroy))#retorna un arreglo de tuplas aletorias si que se repitan en un espacio determinado
-        for x in range(numeroIni):
-            xr,yr = numerosxy[x]
-            self.list.append(Asteriode(xr,yr))
+class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
+    def __init__(self):
+        self.AstroWidh=Asteriode(0,0).rect.width
+        self.wave=[]
+        self.numWavesDestroy=0
+    def cwave(self):
+        global nivel
+        nivel = round(self.numWavesDestroy/10)#nivel aumenta cada 10 oleadeas(WAVEs) destruidos por uno mismo
+        if len(self.wave)==0:
+            num=random.randint(2,6)
+            while(len(self.wave)<num):
+                numerox= random.randint(0,WIDTH)
+                numeroy= random.randint(-3*self.AstroWidh,-self.AstroWidh)
+                self.wave.append(Asteriode(numerox,numeroy))
+            return self.wave
     def mover(self,time):
-        for asteriodes in self.list: #por cada asteroidede la lista llamar la funcion mover
+        for asteriodes in self.wave: #por cada asteroidede la wavea llamar la funcion mover
             asteriodes.mover(time)
             if asteriodes.rect.centery >= (HEIGHT): #si esta por debajo del mapo se borra
-                self.list.remove(asteriodes)
+                self.wave.remove(asteriodes)
                 global vidas
-                vidas-=1
-                print vidas  
+                vidas-=1 
     def update(self,screen):
-        for asteroides in self.list:
+        for asteroides in self.wave:
             asteroides.update(screen)
-    def listExis(self):
-        if self.list.__len__() ==0:
-            return True
-        else:
-            return False
     def destruir(self):
-        for asteriodes in self.list:
+        for asteriodes in self.wave:
             x,y=pygame.mouse.get_pos()
             if ((x<asteriodes.rect.right and x>asteriodes.rect.left)and(y<asteriodes.rect.bottom and y>asteriodes.rect.top)):
-                self.list.remove(asteriodes)
+                self.wave.remove(asteriodes)
                 global score
                 score+=1
-
-     
+                if len(self.wave)==0:
+                    self.numWavesDestroy+=1
+    
 # ---------------------------------------------------------------------
  
 # Funciones
@@ -113,20 +110,20 @@ def load_image(filename, transparent=False):
 # ---------------------------------------------------------------------
  
 def main():
-    #iniciar variales
+    #iniciar variables
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    ##astro = Asteriode(100,100)
     pygame.display.set_caption("Viaje a la Galxia Negra")
     pygame.mouse.set_visible(False)
     mira = Mira(0,0,"data/mira.png")
+    astro = waveAsteorides() 
     navePanel = NavePanel(0,HEIGHT-60,"data/navePanel.png")    
     fuenteDig=pygame.font.Font("data/fuenteDigital.TTF",20)#ds digital datafont.com
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
-    astro = ListaAsteorides(vidas+90)
-    while True:        
+    while True:   
             time = clock.tick(60)
-            screen.blit(fondo,(0,0))                 
+            screen.blit(fondo,(0,0))
+            astro.cwave()                 
             for eventos in pygame.event.get():
                 if eventos.type == QUIT:
                     pygame.quit()
@@ -147,24 +144,23 @@ def main():
             screen.blit(textoVidas,(200,HEIGHT-35))         
             pygame.display.update()
             #fin del juego
-            if vidas <=0 or astro.listExis():
-                fuenteEnd=pygame.font.Font("data/fuenteDigital.TTF",80)
-                pygame.mouse.set_visible(True)
-                while True:
-                    screen.blit(fondo,(0,0))
-                    msj=""
-                    if vidas <=0:
-                        msj="Has perdido"
-                    elif astro.listExis():
-                        msj="has ganado"
-                    textoEnd=fuenteEnd.render(msj,0,(0,225,0))
-                    screen.blit(textoEnd,( (WIDTH/2)-fuenteEnd.get_height() ,(HEIGHT/2)-fuenteEnd.get_height() ) )
-                    for eventos in pygame.event.get():
-                        if eventos.type == QUIT:
-                            pygame.quit()
-                            sys.exit()
-                    pygame.display.update()           
-    return 0       
+            #if vidas <=0 or astro.waveExis():
+             #   fuenteEnd=pygame.font.Font("data/fuenteDigital.TTF",80)
+              #  pygame.mouse.set_visible(True)
+               # while True:
+                #    screen.blit(fondo,(0,0))
+                 #   msj=""
+                  #  if vidas <=0:
+                   #     msj="Has perdido"
+                    #elif astro.waveExis():
+                     #   msj="has ganado"
+                    #textoEnd=fuenteEnd.render(msj,0,(0,225,0))
+                   # screen.blit(textoEnd,( (WIDTH/2)-fuenteEnd.get_height() ,(HEIGHT/2)-fuenteEnd.get_height() ) )
+                  #  for eventos in pygame.event.get():
+                   #     if eventos.type == QUIT:
+                    #        pygame.quit()
+                     #       sys.exit()
+                   # pygame.display.update()                 
     return 0
  
 if __name__ == '__main__':
