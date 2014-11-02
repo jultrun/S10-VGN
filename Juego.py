@@ -52,10 +52,8 @@ class Asteriode(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
-        self.speed = 0.1
     def mover(self,time):
-        self.rect.centery += self.speed *time
-        self.rect.move_ip(0,1)
+        self.rect.move_ip(0,2)
     def update(self,superficie):
         superficie.blit(self.image,self.rect)      
 class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
@@ -65,9 +63,10 @@ class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
         self.numWavesDestroy=0
     def cwave(self):
         global nivel
-        nivel = round(self.numWavesDestroy/10)#nivel aumenta cada 10 oleadeas(WAVEs) destruidos por uno mismo
+        nivel = round(self.numWavesDestroy/10)+1#nivel aumenta cada 10 oleadeas(WAVEs) destruidos por uno mismo
+        astMin,astMax=({1:(2,6), 2:(3,7), 3:(4,8)}[nivel])#ajusta el  minimo y maximo de asteorides de la oleada por cada nivel
         if len(self.wave)==0:
-            num=random.randint(2,6)
+            num=random.randint(astMin,astMax)
             while(len(self.wave)<num):
                 numerox= random.randint(0,WIDTH)
                 numeroy= random.randint(-3*self.AstroWidh,-self.AstroWidh)
