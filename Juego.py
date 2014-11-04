@@ -102,7 +102,6 @@ def load_image(filename, transparent=False):
                 color = image.get_at((0,0))
                 image.set_colorkey(color, RLEACCEL)
         return image
-
 # ---------------------------------------------------------------------
  
 def main():
