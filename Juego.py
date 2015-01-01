@@ -9,23 +9,22 @@ from __builtin__ import str
 # variables
 score=0
 nivel=1
-vidas=14343
+vidas=100
 # Constantes
 WIDTH = 640
 HEIGHT = 480
-COLOR_LASER = (225,0,0)
 # Clases
 # ---------------------------------------------------------------------
 class NavePanel(pygame.sprite.Sprite): 
-    def __init__(self, x,y,image):
+    def __init__(self,image):
         pygame.sprite.Sprite.__init__(self)
         self.image = load_image(image,True)
         self.rect = self.image.get_rect()
-        self.rect.left = x
-        self.rect.top = y
+        self.rect.left = 0
+        self.rect.top = HEIGHT-60
     def disparar(self,superficie,objetivo):      
-        pygame.draw.line(superficie,COLOR_LASER,(0,HEIGHT),pygame.mouse.get_pos(),4)
-        pygame.draw.line(superficie,COLOR_LASER,(WIDTH,HEIGHT),pygame.mouse.get_pos(),4)  
+        pygame.draw.line(superficie,(225,0,0),(0,HEIGHT),pygame.mouse.get_pos(),4)
+        pygame.draw.line(superficie,(225,0,0),(WIDTH,HEIGHT),pygame.mouse.get_pos(),4)  
         laser=pygame.mixer.Sound("data/LASER1.WAV")
         laser.play() 
         objetivo.destruir()
@@ -54,15 +53,16 @@ class Asteriode(pygame.sprite.Sprite):
     def update(self,superficie):
         superficie.blit(self.image,self.rect)      
 class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
-    def __init__(self):
+    def __init__(self):       
         self.AstroWidh=Asteriode(0,0).rect.width
         self.wave=[]
         self.numWavesDestroy=0
-    def cwave(self):
+    def cwave(self):     
         global nivel
         nivel = round(self.numWavesDestroy/10)+1#nivel aumenta cada 10 oleadeas(WAVEs) destruidos por uno mismo
         astMin,astMax=({1:(2,6), 2:(3,7), 3:(4,8),4:(0,0)}[nivel])#ajusta el  minimo y maximo de asteorides de la oleada por cada nivel
         if len(self.wave)==0:
+            self.isdestroymy=False
             num=random.randint(astMin,astMax)
             while(len(self.wave)<num):
                 numerox= random.randint(0,WIDTH)
@@ -77,18 +77,24 @@ class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
                 global vidas
                 vidas-=1 
     def update(self,screen):
+        if len(self.wave)==0 and self.isdestroymy:
+                    self.numWavesDestroy+=1
+                    print "primera oleada destruida"
         for asteroides in self.wave:
             asteroides.update(screen)
-    def destruir(self):
-        for asteriodes in self.wave:
+    def destruir(self):         
+        for asteriodes in self.wave:           
             x,y=pygame.mouse.get_pos()
             if ((x<asteriodes.rect.right and x>asteriodes.rect.left)and(y<asteriodes.rect.bottom and y>asteriodes.rect.top)):
                 self.wave.remove(asteriodes)
                 global score
-                score+=1
-                if len(self.wave)==0:
-                    self.numWavesDestroy+=1
-    
+                score+=1                
+                print self.isdestroymy
+                if self.isdestroymy==False:
+                    self.isdestroymy=True
+                    print "fue destruido el primero"
+                
+                  
 # ---------------------------------------------------------------------
  
 # Funciones
@@ -102,6 +108,7 @@ def load_image(filename, transparent=False):
                 color = image.get_at((0,0))
                 image.set_colorkey(color, RLEACCEL)
         return image
+
 # ---------------------------------------------------------------------
  
 def main():
@@ -112,7 +119,7 @@ def main():
     pygame.mouse.set_visible(False)
     mira = Mira(0,0,"data/mira.png")
     astro = waveAsteorides() 
-    navePanel = NavePanel(0,HEIGHT-60,"data/navePanel.png")    
+    navePanel = NavePanel("data/navePanel.png")    
     fuenteDig=pygame.font.Font("data/fuenteDigital.TTF",20)#ds digital datafont.com
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
@@ -137,7 +144,6 @@ def main():
             screen.blit(textoScore,(400,HEIGHT-35))
             screen.blit(textoVidas,(200,HEIGHT-35))         
             pygame.display.update()
-            print "fps:", clock.get_fps()
             #fin del juego
             if vidas <=0 or nivel>=4:
                 gameover=True
