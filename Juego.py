@@ -49,6 +49,7 @@ class Asteriode(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.centery = y
     def mover(self):
+        
         self.rect.move_ip(0,2)
     def update(self,superficie):
         superficie.blit(self.image,self.rect)      
