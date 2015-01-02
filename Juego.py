@@ -92,11 +92,8 @@ class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
                 print self.isdestroymy
                 if self.isdestroymy==False:
                     self.isdestroymy=True
-                    print "fue destruido el primero"
-                
-                  
+                    print "fue destruido el primero"              
 # ---------------------------------------------------------------------
- 
 # Funciones
 # ---------------------------------------------------------------------
 def load_image(filename, transparent=False):
@@ -108,7 +105,6 @@ def load_image(filename, transparent=False):
                 color = image.get_at((0,0))
                 image.set_colorkey(color, RLEACCEL)
         return image
-
 # ---------------------------------------------------------------------
  
 def main():
@@ -163,7 +159,7 @@ def main():
     pygame.quit()
     sys.exit()                
     return 0
- 
+
 if __name__ == '__main__':
     pygame.init()
     main()
