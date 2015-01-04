@@ -37,9 +37,8 @@ class Mira(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y 
-    def mover(self, posxy):
-        self.rect.centerx,self.rect.centery=(posxy)            
     def update(self,superfice):
+        self.rect.centerx,self.rect.centery=(pygame.mouse.get_pos())               
         superfice.blit(self.image,self.rect)
 class Asteriode(pygame.sprite.Sprite):
     def __init__(self, x,y):
@@ -47,12 +46,10 @@ class Asteriode(pygame.sprite.Sprite):
         self.image = load_image("data/asteroide.png",True)
         self.rect = self.image.get_rect()
         self.rect.centerx = x
-        self.rect.centery = y
-    def mover(self):
-        
-        self.rect.move_ip(0,2)
-    def update(self,superficie):
-        superficie.blit(self.image,self.rect)      
+        self.rect.centery = y        
+    def update(self,screen):
+        self.rect.move_ip(0,1)
+        screen.blit(self.image,self.rect)      
 class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
     def __init__(self):       
         self.AstroWidh=Asteriode(0,0).rect.width
@@ -70,14 +67,13 @@ class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
                 numeroy= random.randint(-3*self.AstroWidh,-self.AstroWidh)
                 self.wave.append(Asteriode(numerox,numeroy))
             return self.wave
-    def mover(self):
-        for asteriodes in self.wave: #por cada asteroidede la wavea llamar la funcion mover
-            asteriodes.mover()
+    def update(self,screen):
+        for asteriodes in self.wave: #por cada asteroidede la wave llamar la funcion mover
+            asteriodes.update(screen)
             if asteriodes.rect.centery >= (HEIGHT): #si esta por debajo del mapo se borra
                 self.wave.remove(asteriodes)
                 global vidas
-                vidas-=1 
-    def update(self,screen):
+                vidas-=1  
         if len(self.wave)==0 and self.isdestroymy:
                     self.numWavesDestroy+=1
                     print "primera oleada destruida"
@@ -130,9 +126,7 @@ def main():
                 if eventos.type == MOUSEBUTTONDOWN:
                     navePanel.disparar(screen, astro)                 
             #UPDATES/DIBIJAR
-            astro.mover()
             astro.update(screen)
-            mira.mover(pygame.mouse.get_pos())
             mira.update(screen)            
             navePanel.update(screen)
             global score
@@ -160,7 +154,6 @@ def main():
     pygame.quit()
     sys.exit()                
     return 0
-
 if __name__ == '__main__':
     pygame.init()
     main()
