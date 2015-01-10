@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Modulos
-import sys, pygame, random
+import sys, pygame, random, Sprite
 from pygame.locals import *
+from Sprite import *
 from pygame.examples.mask import Sprite
 from pygame import sprite
 from __builtin__ import str
@@ -15,21 +16,8 @@ WIDTH = 640
 HEIGHT = 480
 # Clases
 # ---------------------------------------------------------------------
-class NavePanel(pygame.sprite.Sprite): 
-    def __init__(self,image):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = load_image(image,True)
-        self.rect = self.image.get_rect()
-        self.rect.left = 0
-        self.rect.top = HEIGHT-60
-    def disparar(self,superficie,objetivo):      
-        pygame.draw.line(superficie,(225,0,0),(0,HEIGHT),pygame.mouse.get_pos(),4)
-        pygame.draw.line(superficie,(225,0,0),(WIDTH,HEIGHT),pygame.mouse.get_pos(),4)  
-        laser=pygame.mixer.Sound("data/LASER1.WAV")
-        laser.play() 
-        objetivo.destruir()
-    def update(self, superficie):
-        superficie.blit(self.image,self.rect) 
+class NavePanel(Nave): 
+    pass
 class Mira(pygame.sprite.Sprite):
     def __init__(self,x,y,image):
         pygame.sprite.Sprite.__init__(self)
@@ -128,7 +116,7 @@ def main():
             #UPDATES/DIBIJAR
             astro.update(screen)
             mira.update(screen)            
-            navePanel.update(screen)
+            navePanel.updated(screen)
             global score
             textoScore=fuenteDig.render(str(score),0,(0,225,0))
             textoVidas=fuenteDig.render(str(vidas),0,(225,0,0))
