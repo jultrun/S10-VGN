@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Modulos
-import sys, pygame, random, Sprite
+import sys, pygame, random
 from pygame.locals import *
-from Sprite import *
+from Sprites import Sprites
 from pygame.examples.mask import Sprite
 from pygame import sprite
 from __builtin__ import str
@@ -16,8 +16,7 @@ WIDTH = 640
 HEIGHT = 480
 # Clases
 # ---------------------------------------------------------------------
-class NavePanel(Nave): 
-    pass
+
 class Mira(pygame.sprite.Sprite):
     def __init__(self,x,y,image):
         pygame.sprite.Sprite.__init__(self)
@@ -100,7 +99,7 @@ def main():
     pygame.mouse.set_visible(False)
     mira = Mira(0,0,"data/mira.png")
     astro = waveAsteorides() 
-    navePanel = NavePanel("data/navePanel.png")    
+    navePanel = Sprites.Nave("data/navePanel.png")   
     fuenteDig=pygame.font.Font("data/fuenteDigital.TTF",20)#ds digital datafont.com
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
