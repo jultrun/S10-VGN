@@ -1,10 +1,6 @@
 import pygame,utils,Sprites
 from utils import Constans
-from pygame.locals import *
-from pygame.examples.mask import Sprite
-from pygame import sprite
-from pygame.examples.mask import Sprite
-class Nave(Sprites): 
+class Nave(Sprites.Sprite): 
     def __init__(self,image):
         super(Nave, self).__init__(image)
         self.rect.left = 0
