@@ -5,9 +5,10 @@ class Asteriode(Sprites.Sprite):
     def __init__(self, x,y):
         super(Asteriode, self).__init__("data/asteroide.png")
         self.rect.centerx = x
-        self.rect.centery = y        
+        self.rect.centery = y
+        #self.speed=166.5   
     def update(self,screen):
-        self.rect.move_ip(0,1)
+        self.rect.move_ip(0,1.5) 
         screen.blit(self.image,self.rect)
 class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
     def __init__(self):       

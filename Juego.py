@@ -17,7 +17,7 @@ def main():
     fondo = pygame.image.load("data/Space.jpg")#flick
     clock = pygame.time.Clock()
     while playing:   
-            time = clock.tick(60)
+            clock.tick(60)            
             screen.blit(fondo,(0,0))
             astro.cwave()                 
             for eventos in pygame.event.get():
