@@ -11,3 +11,4 @@ class Nave(Sprites.Sprite):
         laser=pygame.mixer.Sound("data/LASER1.WAV")
         laser.play() 
         objetivo.destruir()
+        #objetivo.rotates()

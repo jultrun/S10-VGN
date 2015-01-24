@@ -24,7 +24,8 @@ def main():
                 if eventos.type == QUIT:
                     playing=False           
                 if eventos.type == MOUSEBUTTONDOWN:
-                    navePanel.disparar(screen, astro)                 
+                    navePanel.disparar(screen, astro)
+                    #navePanel.rotates()                 
             #UPDATES/DIBIJAR
             astro.update(screen)
             mira.update(screen)            

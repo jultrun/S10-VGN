@@ -6,3 +6,7 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     def updated(self,screen):
         screen.blit(self.image,self.rect)
+    def rotates(self):
+        #self.rotacion -= 2 %360
+        self.image = pygame.transform.rotate(self.image, 45)
+        self.rect = self.image.get_rect()

@@ -1,18 +1,23 @@
 import pygame,Sprites,random,utils
 from utils import Vars
 from utils import Constans
+import math
+from __builtin__ import str
 class Asteriode(Sprites.Sprite):
-    def __init__(self, x,y):
+    def __init__(self, x,y,mx,my):
         super(Asteriode, self).__init__("data/asteroide.png")
         self.rect.centerx = x
         self.rect.centery = y
+        self.movex=mx
+        self.movey=my
         #self.speed=166.5   
     def update(self,screen):
-        self.rect.move_ip(0,1.5) 
+        print str(self.movex)+" "+str(self.movey)
+        self.rect.move_ip(self.movex*3,self.movey*3) 
         screen.blit(self.image,self.rect)
 class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
     def __init__(self):       
-        self.AstroWidh=Asteriode(0,0).rect.width
+        self.AstroWidh=Asteriode(0,0,0,0).rect.width
         self.wave=[]
         self.numWavesDestroy=0
     def cwave(self):     
@@ -22,9 +27,13 @@ class waveAsteorides(): #crea un arreglo de asteroides y los mueve y actualia
             self.isdestroymy=False
             num=random.randint(astMin,astMax)
             while(len(self.wave)<num):
-                numerox= random.randint(0,Constans.WIDTH)
-                numeroy= random.randint(-3*self.AstroWidh,-self.AstroWidh)
-                self.wave.append(Asteriode(numerox,numeroy))
+                #numerox= random.randint(0,Constans.WIDTH)
+                #numeroy= random.randint(-3*self.AstroWidh,-self.AstroWidh)
+                vectory=random.randint(-Constans.WIDTH/2,Constans.WIDTH/2)
+                mag=round(math.sqrt(Constans.HEIGHT**2+vectory**2),2)
+                vectorUniY=Constans.HEIGHT/mag
+                vectorUniX=vectory/mag
+                self.wave.append(Asteriode(Constans.WIDTH/2,0,vectorUniX,vectorUniY))
             return self.wave
     def update(self,screen):
         for asteriodes in self.wave: #por cada asteroidede la wave llamar la funcion mover
